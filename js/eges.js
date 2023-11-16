@@ -77,7 +77,7 @@ async function getWords(file) {
 	}
 	var promise = new Promise(function (resolve) {
 		const xhttp = new XMLHttpRequest();
-		xhttp.open("GET", "/assets/" + file);
+		xhttp.open("GET", "./assets/" + file);
 		xhttp.onload = function () {
 			if (xhttp.status != 200) resolve("ERRORR");
 			else resolve(xhttp.responseText);
