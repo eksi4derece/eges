@@ -1,0 +1,65 @@
+@import url("/css/main.css");
+
+#questions {
+    height: 50vh;
+    width: 50vw;
+    color: var(--text-color);
+    display: none;
+    margin: auto;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5vh;
+    gap: 1em;
+}
+
+#definition {
+    color: dodgerblue;
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    height: 90%;
+    width: 100%;
+    border: .2em solid dodgerblue;
+    background: #222;
+    padding: 2em;
+    box-sizing: border-box;
+    border-radius: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#control-panel {
+    grid-template-columns: 6em auto 6em 6em 6em;
+}
+
+#wordinput {
+    min-width: 0;
+}
+
+#start-button {
+    grid-column: 2 / 3;
+    text-align: center;
+}
+
+@media screen and (max-width:600px) {
+    #questions {
+        height: 30em;
+        width: 25em;
+        padding: 1em;
+    }
+    #definition {
+        padding: 1em;
+    }
+}
+@media screen and (max-width: 992px) {
+    #control-panel {
+        grid-template-columns: auto auto auto auto;
+        grid-template-rows: auto auto;
+    }
+    #wordinput {
+        grid-column: 1/ span 4;
+        grid-row-start: 2;
+    }
+}

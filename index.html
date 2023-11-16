@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/eges.css">
+	<title>EGES</title>
+</head>
+
+<body>
+	<div id="topics" class="centered-container">
+		<button class="item" id="start-button" onclick="start()">Start</button>
+	</div>
+	<div id="questions">
+		<div id="definition"></div>
+		<div id="control-panel" class="control-panel">
+			<div class="item" id="counter"></div>
+			<input class="item" name="wordinput" id="wordinput" type="text" autocomplete="off" spellcheck="false"
+				autocorrect="off" onkeydown="if(event.key == 'Enter') check()">
+			<button class="item" id="skip" onclick="skipf()">Skip</button>
+			<button class="item" id="next" onclick="ask()">Next</button>
+			<button class="item" id="check" onclick="check()">Check</button>
+			<button class="item" id="cancel" onclick="end()">Cancel</button>
+		</div>
+	</div>
+	<canvas id="omega" style="position: absolute; top:0 ; left:0; z-index:-100;"></canvas>
+	<script>
+		async function loadtopics(){
+			var promise = new Promise(function (resolve) {
+			const xhttp = new XMLHttpRequest();
+			xhttp.open("GET", "/assets/topics");
+			xhttp.onload = function () {
+				if (xhttp.status != 200) resolve("ERRORR");
+				else resolve(xhttp.responseText);
+			}
+			xhttp.send();
+			});
+			topics_pt = await promise;
+			sbutton = topics.innerHTML;
+			topics.innerHTML = "";
+			for (var pair of topics_pt.trim().split("\n")) {
+				a = pair.split("|")[0].trim();
+				b = pair.split("|")[1].trim();
+				topics.innerHTML += '<label class="item checkbox" for="' + b + '" name="' + b + '">' + a + '<input type="checkbox" name="' + b + '" id="' + b + '">' + '</label>';
+			}
+			topics.innerHTML += sbutton;
+		}
+		loadtopics();
+	</script>
+	<script src="/js/omega.js"></script>
+	<script src="/js/eges.js"></script>
+</body>
+
+</html>
