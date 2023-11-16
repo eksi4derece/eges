@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="/css/eges.css">
+	<link rel="stylesheet" href="./css/eges.css">
 	<title>EGES</title>
 </head>
 
@@ -29,7 +29,7 @@
 		async function loadtopics(){
 			var promise = new Promise(function (resolve) {
 			const xhttp = new XMLHttpRequest();
-			xhttp.open("GET", "/assets/topics");
+			xhttp.open("GET", "./assets/topics");
 			xhttp.onload = function () {
 				if (xhttp.status != 200) resolve("ERRORR");
 				else resolve(xhttp.responseText);
@@ -48,8 +48,8 @@
 		}
 		loadtopics();
 	</script>
-	<script src="/js/omega.js"></script>
-	<script src="/js/eges.js"></script>
+	<script src="./js/omega.js"></script>
+	<script src="./js/eges.js"></script>
 </body>
 
 </html>
