@@ -100,8 +100,10 @@ function getTopics() {
 
 function parseWords(wordlist) {
 	const words = new Map();
-	for (var pair of wordlist.trim().split("\n")) {
-		words.set(pair.split("|")[0].trim(), pair.split("|")[1].trim());
+	for (var dict of wordlist.trim().split("\n")){ 
+		dict = dict.split("|");
+		dict.forEach((cur,ind,arr) => {arr[ind]=cur.trim();});
+		words.set(dict[0],dict.slice(1));
 	}
 	return words;
 }
@@ -109,7 +111,7 @@ function parseWords(wordlist) {
 function check() {
 	input.focus()
 	if (!input.value) return;
-	if (input.value == words.get(def.innerHTML)) {
+	if (words.get(def.innerHTML).includes(input.value)) {
 		correct();
 		words.delete(def.innerHTML);
 		ask();
