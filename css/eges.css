@@ -11,21 +11,45 @@
     gap: 1em;
 }
 
-#definition {
+#definition, #title {
     color: dodgerblue;
     font-size: 1.5em;
     font-weight: bold;
     text-align: center;
-    height: 90%;
-    width: 100%;
     border: .2em solid dodgerblue;
     background: #222;
-    padding: 2em;
+    padding: 1em;
     box-sizing: border-box;
     border-radius: 1em;
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+#definition {
+    padding: 2em;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+#definition::-webkit-scrollbar{
+    background-color: transparent;
+    width: 0.75em;
+}
+
+#definition::-webkit-scrollbar-thumb{
+    background-color: dodgerblue;
+    border: 0.2em solid #222;
+    border-radius: 1em;
+}
+
+#definition::-webkit-scrollbar-button{
+    background-color: transparent; /* handle(thumb) yukardan ve asagidan tasmasin diye gorunmez engel */
+}
+
+#title {
+    height: 10%;
+    width: 100%;
 }
 
 #control-panel {

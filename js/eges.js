@@ -9,6 +9,7 @@ const counter = document.getElementById("counter");
 const cancel = document.getElementById("cancel");
 const next = document.getElementById("next");
 const skip = document.getElementById("skip");
+const title = document.getElementById("title");
 var corrects = 0;
 var total = 0;
 const endAnimation = new Animation(new KeyframeEffect(
@@ -75,7 +76,7 @@ async function getWords(file) {
 	if (topiclist.has(file)) {
 		return;
 	}
-	var promise = new Promise(function (resolve) {
+	let promise = new Promise(function (resolve) {
 		const xhttp = new XMLHttpRequest();
 		xhttp.open("GET", "./assets/" + file);
 		xhttp.onload = function () {
@@ -84,8 +85,29 @@ async function getWords(file) {
 		}
 		xhttp.send();
 	});
-	wordlist = await promise;
+	let wordlist = await promise;
 	topiclist.set(file, parseWords(wordlist));
+}
+
+async function loadtopics(){
+	let promise = new Promise(function (resolve) {
+	const xhttp = new XMLHttpRequest();
+	xhttp.open("GET", "./assets/topics");
+	xhttp.onload = function () {
+		if (xhttp.status != 200) resolve("ERRORR");
+		else resolve(xhttp.responseText);
+	}
+	xhttp.send();
+	});
+	let topics_pt = await promise;
+	let sbutton = topics.innerHTML;
+	topics.innerHTML = "";
+	for (var pair of topics_pt.trim().split("\n")) {
+		a = pair.split("|")[0].trim();
+		b = pair.split("|")[1].trim();
+		topics.innerHTML += '<label class="item checkbox" for="' + b + '" name="' + b + '">' + a + '<input type="checkbox" name="' + b + '" id="' + b + '">' + '</label>';
+	}
+	topics.innerHTML += sbutton;
 }
 
 function getTopics() {
@@ -102,8 +124,17 @@ function parseWords(wordlist) {
 	const words = new Map();
 	for (var dict of wordlist.trim().split("\n")){ 
 		dict = dict.split("|");
-		dict.forEach((cur,ind,arr) => {arr[ind]=cur.trim();});
-		words.set(dict[0],dict.slice(1));
+		let trimmer = (cur,ind,arr) => {arr[ind]=cur.trim();};
+		dict.forEach(trimmer);
+		let title_key = dict[0].split("#");
+		title_key.forEach(trimmer);
+		let title = title_key[0];
+		let key = title_key[1];
+		if (title_key.length != 2){
+			key = title_key[0];
+			title = "EGES";
+		}
+		words.set(key,[title,dict.slice(1)]);
 	}
 	return words;
 }
@@ -111,7 +142,7 @@ function parseWords(wordlist) {
 function check() {
 	input.focus()
 	if (!input.value) return;
-	if (words.get(def.innerHTML).includes(input.value)) {
+	if (words.get(def.innerHTML)[1].includes(input.value)) {
 		correct();
 		words.delete(def.innerHTML);
 		ask();
@@ -144,7 +175,9 @@ function ask() {
 		end();
 		return;
 	}
-	def.innerHTML = choice();
+	let definition = choice();
+	def.innerHTML = definition;
+	title.innerHTML = words.get(definition)[0];
 }
 
 function wrong() {
@@ -162,7 +195,7 @@ function skipf(){
 	input.focus();
 	next.style.display = "block";
 	skip.style.display = "none";
-	def.innerHTML = "Answer : " + words.get(def.innerHTML);
+	def.innerHTML = "Answer : " + words.get(def.innerHTML)[1];
 }
 
 async function start() {
@@ -181,3 +214,5 @@ async function start() {
 	startAnimation.play();
 	ask();
 }
+
+loadtopics();
